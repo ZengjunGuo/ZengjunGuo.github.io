@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="440" viewBox="0 0 400 440" role="img" aria-labelledby="title desc">
+  <title id="title">StormTailor modeling framework</title>
+  <desc id="desc">Synthetic cyclones feed wind and rainfall simulations and model-conditional compound-event probability estimates with sampling weights.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#315968" stroke-width="1.5"/></marker></defs>
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; text-anchor: middle; fill: #263a43; }
+    .label { font-size: 25px; font-weight: 600; }
+    .detail { font-size: 19px; fill: #50616a; }
+    .flow { fill: none; stroke: #315968; stroke-width: 2; marker-end: url(#arrow); }
+  </style>
+  <rect width="400" height="440" fill="white"/>
+  <path class="flow" d="M200 119V149"/><path class="flow" d="M200 268V298"/>
+  <text class="label" x="200" y="45">Synthetic cyclones</text>
+  <text class="detail" x="200" y="77">Multiyear ensembles</text>
+  <text class="detail" x="200" y="103">Risk-informed sampling</text>
+  <text class="label" x="200" y="181">Wind and rainfall</text>
+  <text class="label" x="200" y="212">simulations</text>
+  <text class="detail" x="200" y="247">Shared location and time window</text>
+  <text class="label" x="200" y="333">Compound-event</text>
+  <text class="label" x="200" y="364">probabilities</text>
+  <text class="detail" x="200" y="397">Model-conditional</text>
+  <text class="detail" x="200" y="423">Sampling weights retained</text>
+</svg>

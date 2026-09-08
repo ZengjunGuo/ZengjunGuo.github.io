@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="310" viewBox="0 0 900 310" role="img" aria-labelledby="title desc">
+  <title id="title">StormTailor modeling framework</title>
+  <desc id="desc">Synthetic tropical cyclones feed regional wind and rainfall simulations. Compound wind and rainfall events are identified at shared locations and time windows. Sampling weights are retained in model-conditional probability estimation.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#315968" stroke-width="1.5"/></marker>
+  </defs>
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; text-anchor: middle; fill: #263a43; }
+    .label { font-size: 27px; font-weight: 600; }
+    .detail { font-size: 21px; fill: #50616a; }
+    .node { fill: #f6f8f8; stroke: #9eafb5; stroke-width: 1.5; }
+    .flow { fill: none; stroke: #315968; stroke-width: 2; marker-end: url(#arrow); }
+  </style>
+  <rect width="900" height="310" fill="white"/>
+  <path class="flow" d="M275 127H311"/>
+  <path class="flow" d="M585 127H621"/>
+  <rect class="node" x="22" y="52" width="253" height="150"/>
+  <rect class="node" x="313" y="52" width="272" height="150"/>
+  <rect class="node" x="623" y="52" width="255" height="150"/>
+  <g class="label">
+    <text x="148" y="116">Synthetic</text><text x="148" y="151">cyclones</text>
+    <text x="449" y="116">Wind and rainfall</text><text x="449" y="151">simulations</text>
+    <text x="750" y="116">Compound-event</text><text x="750" y="151">probabilities</text>
+  </g>
+  <g class="detail">
+    <text x="148" y="240">Multiyear ensembles</text>
+    <text x="148" y="269">Risk-informed sampling</text>
+    <text x="449" y="240">Shared location</text>
+    <text x="449" y="269">and time window</text>
+    <text x="750" y="240">Model-conditional</text>
+    <text x="750" y="269">Sampling weights retained</text>
+  </g>
+</svg>
