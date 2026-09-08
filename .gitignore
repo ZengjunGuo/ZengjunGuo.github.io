@@ -1,1 +1,11 @@
 .DS_Store
+
+# Assets not used by the current site
+assets/OFL-Lora.txt
+assets/institutions/glasgow-logo.svg
+assets/institutions/nankai.jpg
+assets/lora-400.woff
+assets/lora-600.woff
+assets/research/human-environment-disaster-framework.png
+assets/research/tropical-cyclone-healthcare-framework.png
+assets/research/tropical-cyclone-older-adult-exposure-landscape.png
