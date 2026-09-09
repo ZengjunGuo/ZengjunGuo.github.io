@@ -1,52 +1,18 @@
 (() => {
   const root = document.documentElement;
-  const languageButton = document.getElementById('language-toggle');
   const themeButton = document.getElementById('theme-toggle');
-  const status = document.getElementById('ui-status');
   const media = window.matchMedia('(prefers-color-scheme: dark)');
   const read = (key) => { try { return localStorage.getItem(key); } catch { return null; } };
   const save = (key, value) => { try { localStorage.setItem(key, value); } catch { /* The page also works without browser storage. */ } };
-  const descriptions = {
-    en: 'Zengjun Guo studies the coupled relationships between human activity, urban space and disaster risk, from global infrastructure networks to community accessibility.',
-    zh: '郭增骏，北京大学硕士研究生，研究人类活动—城市空间—灾害风险耦合关系，涵盖全球基础设施网络、城市服务与社区可达性。'
-  };
-  function updateGalleryLabels() {
-    const zh = root.dataset.lang === 'zh';
-    document.querySelectorAll('[data-gallery]').forEach(gallery => {
-      gallery.setAttribute('aria-label', zh ? '研究图件' : 'Research figures');
-      gallery.querySelector('.gallery-prev')?.setAttribute('aria-label', zh ? '上一张图' : 'Previous figure');
-      gallery.querySelector('.gallery-next')?.setAttribute('aria-label', zh ? '下一张图' : 'Next figure');
-      gallery.querySelectorAll('.figure-open').forEach(link => link.setAttribute('aria-label', zh ? '查看原尺寸图件' : 'Open full-size figure'));
-    });
-  }
   function updateThemeLabel() {
     const dark = root.dataset.theme === 'dark';
-    const zh = root.dataset.lang === 'zh';
-    themeButton.querySelector('.button-label').textContent = zh ? (dark ? '浅色模式' : '深色模式') : (dark ? 'Light mode' : 'Dark mode');
-    themeButton.setAttribute('aria-label', zh ? (dark ? '切换到浅色模式' : '切换到深色模式') : (dark ? 'Switch to light mode' : 'Switch to dark mode'));
+    themeButton.querySelector('.button-label').textContent = dark ? 'Light mode' : 'Dark mode';
+    themeButton.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
     themeButton.querySelector('.moon-icon').toggleAttribute('hidden', dark);
     themeButton.querySelector('.sun-icon').toggleAttribute('hidden', !dark);
     document.querySelector('meta[name="theme-color"]').content = dark ? '#1a1817' : '#f3f2f2';
   }
-  function setLanguage(language, announce = false) {
-    const zh = language === 'zh';
-    root.lang = zh ? 'zh-CN' : 'en';
-    root.dataset.lang = zh ? 'zh' : 'en';
-    document.title = zh ? '郭增骏 · Zengjun Guo' : 'Zengjun Guo · 郭增骏';
-    document.querySelector('meta[name="description"]').content = descriptions[zh ? 'zh' : 'en'];
-    languageButton.querySelector('.button-label').textContent = zh ? 'English' : '中文';
-    languageButton.setAttribute('aria-label', zh ? 'Switch to English' : '切换到中文');
-    languageButton.setAttribute('lang', zh ? 'en' : 'zh-CN');
-    updateThemeLabel();
-    updateGalleryLabels();
-    if (announce) status.textContent = zh ? '已切换到中文' : 'Language changed to English';
-  }
-  setLanguage(root.dataset.lang || 'en');
-  languageButton.addEventListener('click', () => {
-    const language = root.dataset.lang === 'en' ? 'zh' : 'en';
-    setLanguage(language, true);
-    save('zg-language', language);
-  });
+  updateThemeLabel();
   themeButton.addEventListener('click', () => {
     root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
     save('zg-theme', root.dataset.theme);

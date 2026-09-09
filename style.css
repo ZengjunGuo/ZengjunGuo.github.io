@@ -47,8 +47,6 @@ body {
   font: 400 17px/1.8 var(--serif);
   -webkit-font-smoothing: antialiased;
 }
-html[data-lang=en] [data-copy=zh],
-html[data-lang=zh] [data-copy=en] { display: none !important; }
 h1, h2, h3, p, figure { margin: 0; }
 a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
 a:hover { color: var(--accent-hover); }
