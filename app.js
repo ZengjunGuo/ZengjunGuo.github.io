@@ -60,6 +60,8 @@
   const viewerImage = document.getElementById('viewer-image');
   const viewerStage = viewer.querySelector('.viewer-stage');
   const zoomButton = document.getElementById('viewer-zoom');
+  const viewerAnimation = document.getElementById('viewer-animation');
+  let viewerSlide = null;
   const setZoom = zoomed => {
     viewerStage.classList.toggle('is-zoomed', zoomed);
     zoomButton.textContent = zoomed ? 'Fit to screen' : 'Zoom in';
@@ -73,11 +75,16 @@
         event.preventDefault();
         const slide = link.closest('.gallery-slide');
         const source = slide.querySelector('img');
-        viewerImage.src = source.currentSrc || source.src;
+        viewerSlide = source.dataset.animationSrc ? slide : null;
+        viewerAnimation.hidden = !viewerSlide;
+        const playing = viewerSlide?.querySelector('.animation-toggle').getAttribute('aria-pressed') === 'true';
+        viewerAnimation.textContent = playing ? 'Pause animation' : 'Play animation';
+        viewerAnimation.setAttribute('aria-pressed', String(playing));
+        viewerImage.src = source.dataset.animationSrc ? source.src : (source.currentSrc || source.src);
         viewerImage.alt = source.alt;
         viewerStage.style.setProperty('--figure-width', `${source.naturalWidth || source.getAttribute('width')}px`);
         document.getElementById('viewer-caption').textContent = slide.querySelector('figcaption').textContent;
-        document.getElementById('viewer-original').href = source.currentSrc || link.href;
+        document.getElementById('viewer-original').href = link.href;
         setZoom(false);
         viewer.showModal();
       });
@@ -90,6 +97,39 @@
       if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) viewer.close();
     });
   }
+  const setAnimation = (slide, playing) => {
+    const img = slide.querySelector('[data-animation-src]');
+    if (!img) return;
+    img.src = playing ? img.dataset.animationSrc : img.dataset.posterSrc;
+    const button = slide.querySelector('.animation-toggle');
+    button.textContent = playing ? 'Pause animation' : 'Play animation';
+    button.setAttribute('aria-pressed', String(playing));
+    if (viewerSlide === slide) {
+      viewerImage.src = img.src;
+      viewerAnimation.textContent = button.textContent;
+      viewerAnimation.setAttribute('aria-pressed', String(playing));
+    }
+  };
+  const pauseAnimation = slide => setAnimation(slide, false);
+  viewerAnimation.addEventListener('click', () => {
+    if (viewerSlide) setAnimation(viewerSlide, viewerAnimation.getAttribute('aria-pressed') !== 'true');
+  });
+  viewer.addEventListener('close', () => {
+    if (viewerSlide) pauseAnimation(viewerSlide);
+    viewerSlide = null;
+    viewerImage.removeAttribute('src');
+  });
+  document.querySelectorAll('.animation-toggle').forEach(button => {
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const slide = button.closest('.gallery-slide');
+      setAnimation(slide, button.getAttribute('aria-pressed') !== 'true');
+    });
+  });
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  motion.addEventListener('change', event => {
+    if (event.matches) document.querySelectorAll('.gallery-slide').forEach(pauseAnimation);
+  });
   document.querySelectorAll('[data-gallery]').forEach(gallery => {
     const slides = [...gallery.querySelectorAll('.gallery-slide')];
     if (slides.length < 2) return;
@@ -98,14 +138,21 @@
     let suppressClick = false;
     const stage = gallery.querySelector('.gallery-stage');
     const show = next => {
+      const hadSlideFocus = slides.some(slide => slide.contains(document.activeElement));
+      slides.forEach(pauseAnimation);
       current = (next + slides.length) % slides.length;
       slides.forEach((slide, index) => slide.hidden = index !== current);
       gallery.querySelector('.gallery-count').textContent = `${current + 1} / ${slides.length}`;
+      gallery.querySelector('.gallery-select').value = String(current);
+      if (hadSlideFocus) slides[current].querySelector('.figure-open').focus({preventScroll: true});
     };
+    gallery.querySelector('.gallery-toolbar').hidden = false;
     gallery.querySelector('.gallery-controls').hidden = false;
+    gallery.querySelector('.gallery-select').addEventListener('change', event => show(Number(event.target.value)));
     gallery.querySelector('.gallery-prev').addEventListener('click', () => show(current - 1));
     gallery.querySelector('.gallery-next').addEventListener('click', () => show(current + 1));
     gallery.addEventListener('keydown', event => {
+      if (event.target.matches('select')) return;
       if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
       event.preventDefault();
       show(current + (event.key === 'ArrowRight' ? 1 : -1));
